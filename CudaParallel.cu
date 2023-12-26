@@ -1,5 +1,6 @@
 #pragma once
 #include "CudaParallel.cuh"
+#include <iostream>
 
 __global__ void dotProduct(float* vectorACuda, float* vectorBCuda, float* vectorCCuda, int size){
     int i = threadIdx.x + blockIdx.x * blockDim.x;
@@ -8,15 +9,6 @@ __global__ void dotProduct(float* vectorACuda, float* vectorBCuda, float* vector
     }
 }
 
-// __global__ void CudaParallel::consolodateVector(float* vectorCuda, int level){
-//     if()
-
-//     int i = threadIdx.x + blockIdx.x * blockDim.x;
-//     int space = cudaPow(2, level);
-//     if(i < m_array_size){
-        
-//     }
-// }
 
 __device__ int cudaPow(int val, int pow){
     int returns = 1;
@@ -27,12 +19,22 @@ __device__ int cudaPow(int val, int pow){
     return returns;
 }
 
+__global__ void consolodateVector(float* vectorCuda, int level, int size){
+    int i = threadIdx.x + blockIdx.x * blockDim.x;
+    int space = cudaPow(2, level);
+    int diff = cudaPow(2, level-1);
+    if(i < size && (i + diff < size) && i % space == 0){
+        vectorCuda[i] = vectorCuda[i] + vectorCuda[i + diff];
+    }
+}
+
+
 
 CudaParallel::CudaParallel(size_t size){
     m_array_size = size;
 }
 
-float* CudaParallel::dotVectors(float* vectorA, float* vectorB){
+float CudaParallel::dotVectors(float* vectorA, float* vectorB){
     //Create the pointers on the GPU to the data
     float* vectorACuda;
     float* vectorBCuda;
@@ -59,8 +61,17 @@ float* CudaParallel::dotVectors(float* vectorA, float* vectorB){
     //Do the dot products
     dotProduct<<<std::ceil(m_array_size/256.0), 256>>>(vectorACuda, vectorBCuda, vectorCCuda, reinterpret_cast<int>(m_array_size));
 
-    cudaMemcpy(vectorC, vectorCCuda, m_array_size * sizeof(float), cudaMemcpyDeviceToHost);
+    int level = 1;
 
-    return vectorC;
+    while(std::pow(2, level) <= m_array_size){
+        consolodateVector<<<std::ceil(m_array_size/256.0), 256>>>(vectorCCuda, level, m_array_size);
+        level++;
+    }
+
+    consolodateVector<<<std::ceil(m_array_size/256.0), 256>>>(vectorCCuda, level, m_array_size);
+
+    cudaMemcpy(vectorC, vectorCCuda, sizeof(float), cudaMemcpyDeviceToHost);
+
+    return *vectorC;
 }
 

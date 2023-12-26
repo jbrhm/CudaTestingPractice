@@ -7,5 +7,5 @@ private:
 public:
     CudaParallel(size_t size);
 
-    float* dotVectors(float* vectorA, float* vectorB);
+    float dotVectors(float* vectorA, float* vectorB);
 };

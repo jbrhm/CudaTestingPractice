@@ -12,5 +12,5 @@ public:
 
     ~CudaParallelWrapper() = default;
 
-    float* dotVectors(float* vectorA, float* vectorB);
+    float dotVectors(float* vectorA, float* vectorB);
 };

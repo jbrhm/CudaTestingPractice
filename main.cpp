@@ -17,9 +17,7 @@ int main(){
         vectorB[i] = 3;
     }
 
-    float* vectorC = wrapper.dotVectors(vectorA, vectorB);
+    float vectorC = wrapper.dotVectors(vectorA, vectorB);
 
-    for(int i = 0; i < size; i++){
-        std::cout << vectorC[i] << std::endl;
-    }
+    std::cout << vectorC << " " << std::endl;
 }
