@@ -1,0 +1,3 @@
+/home/jabra/CudaTesting/Build/CMakeFiles/CudaTesting.dir
+/home/jabra/CudaTesting/Build/CMakeFiles/edit_cache.dir
+/home/jabra/CudaTesting/Build/CMakeFiles/rebuild_cache.dir

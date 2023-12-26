@@ -1,0 +1,1 @@
+/usr/bin/c++ -rdynamic CMakeFiles/CudaTesting.dir/main.cpp.o CMakeFiles/CudaTesting.dir/CudaParallelWrapper.cu.o CMakeFiles/CudaTesting.dir/CudaParallel.cu.o -o CudaTesting   -L/usr/lib/x86_64-linux-gnu/stubs  -lcudadevrt -lcudart_static -lrt -lpthread -ldl 
