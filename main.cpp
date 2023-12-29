@@ -1,23 +1,28 @@
 #include "CudaParallelWrapper.hpp"
+#include "ParallelLayerWrapper.cuh"
 #include <cstddef>
 #include <iostream>
 
 int main(){
-    size_t size = 100;
+    size_t size = 1000;
 
-    CudaParallelWrapper wrapper(size);
-
-    float* vectorA = new float[size];
+    float* inputVector = new float[size];
     for(int i = 0; i < size; i++){
-        vectorA[i] = 2;
+        inputVector[i] = 2;
     }
 
-    float* vectorB = new float[size];
-    for(int i = 0; i < size; i++){
-        vectorB[i] = 3;
+    float* matrixData = new float[size * size];
+    for(int i = 0; i < size * size; i++){
+        matrixData[i] = 1;
     }
 
-    float vectorC = wrapper.dotVectors(vectorA, vectorB);
+    ParallelLayerWrapper wrapper;
+    float* vectorC;
 
-    std::cout << vectorC << " " << std::endl;
+    wrapper.loadMatrix(matrixData, size);
+    vectorC = wrapper.forwardMatrix(inputVector);
+
+    for(int i = 0; i < size; i++){
+        std::cout << vectorC[i] << " " << i << std::endl;
+    }
 }

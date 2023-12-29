@@ -177,6 +177,54 @@ CudaParallelWrapper.cu.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/CudaTesting.dir/build.make CMakeFiles/CudaTesting.dir/CudaParallelWrapper.cu.s
 .PHONY : CudaParallelWrapper.cu.s
 
+ParallelLayer.o: ParallelLayer.cu.o
+.PHONY : ParallelLayer.o
+
+# target to build an object file
+ParallelLayer.cu.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CudaTesting.dir/build.make CMakeFiles/CudaTesting.dir/ParallelLayer.cu.o
+.PHONY : ParallelLayer.cu.o
+
+ParallelLayer.i: ParallelLayer.cu.i
+.PHONY : ParallelLayer.i
+
+# target to preprocess a source file
+ParallelLayer.cu.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CudaTesting.dir/build.make CMakeFiles/CudaTesting.dir/ParallelLayer.cu.i
+.PHONY : ParallelLayer.cu.i
+
+ParallelLayer.s: ParallelLayer.cu.s
+.PHONY : ParallelLayer.s
+
+# target to generate assembly for a file
+ParallelLayer.cu.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CudaTesting.dir/build.make CMakeFiles/CudaTesting.dir/ParallelLayer.cu.s
+.PHONY : ParallelLayer.cu.s
+
+ParallelLayerWrapper.o: ParallelLayerWrapper.cu.o
+.PHONY : ParallelLayerWrapper.o
+
+# target to build an object file
+ParallelLayerWrapper.cu.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CudaTesting.dir/build.make CMakeFiles/CudaTesting.dir/ParallelLayerWrapper.cu.o
+.PHONY : ParallelLayerWrapper.cu.o
+
+ParallelLayerWrapper.i: ParallelLayerWrapper.cu.i
+.PHONY : ParallelLayerWrapper.i
+
+# target to preprocess a source file
+ParallelLayerWrapper.cu.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CudaTesting.dir/build.make CMakeFiles/CudaTesting.dir/ParallelLayerWrapper.cu.i
+.PHONY : ParallelLayerWrapper.cu.i
+
+ParallelLayerWrapper.s: ParallelLayerWrapper.cu.s
+.PHONY : ParallelLayerWrapper.s
+
+# target to generate assembly for a file
+ParallelLayerWrapper.cu.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/CudaTesting.dir/build.make CMakeFiles/CudaTesting.dir/ParallelLayerWrapper.cu.s
+.PHONY : ParallelLayerWrapper.cu.s
+
 main.o: main.cpp.o
 .PHONY : main.o
 
@@ -216,6 +264,12 @@ help:
 	@echo "... CudaParallelWrapper.o"
 	@echo "... CudaParallelWrapper.i"
 	@echo "... CudaParallelWrapper.s"
+	@echo "... ParallelLayer.o"
+	@echo "... ParallelLayer.i"
+	@echo "... ParallelLayer.s"
+	@echo "... ParallelLayerWrapper.o"
+	@echo "... ParallelLayerWrapper.i"
+	@echo "... ParallelLayerWrapper.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"

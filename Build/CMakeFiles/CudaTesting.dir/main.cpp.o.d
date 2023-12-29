@@ -9,6 +9,7 @@ CMakeFiles/CudaTesting.dir/main.cpp.o: /home/jabra/CudaTesting/main.cpp \
  /usr/include/x86_64-linux-gnu/gnu/stubs.h \
  /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
  /usr/lib/gcc/x86_64-linux-gnu/11/include/stddef.h \
+ /home/jabra/CudaTesting/ParallelLayerWrapper.cuh \
  /usr/include/c++/11/cstddef \
  /usr/include/x86_64-linux-gnu/c++/11/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/11/bits/os_defines.h \

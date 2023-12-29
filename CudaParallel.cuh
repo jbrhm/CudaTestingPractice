@@ -4,8 +4,18 @@ class CudaParallel{
 private:
     int m_array_size;
 
-public:
-    CudaParallel(size_t size);
+    //Cuda Vector Ptrs
+    float* vectorConstantCuda;
+    float* vectorVariableCuda;
+    float* vectorOutputCuda;
 
-    float dotVectors(float* vectorA, float* vectorB);
+    //Host Vector Output
+    float* vectorOutput;
+
+public:
+    CudaParallel(size_t size, float* vectorData);
+
+    static int getCudaCores();
+
+    float dotVectors(float* vectorData);
 };

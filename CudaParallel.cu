@@ -1,11 +1,13 @@
 #pragma once
 #include "CudaParallel.cuh"
 #include <iostream>
+#include "helper_cuda.h"
 
 __global__ void dotProduct(float* vectorACuda, float* vectorBCuda, float* vectorCCuda, int size){
     int i = threadIdx.x + blockIdx.x * blockDim.x;
-    if(i < size){
+    while (i < size){
         vectorCCuda[i] = vectorACuda[i] * vectorBCuda[i];
+        i += blockDim.x * 256;//This is thread/block
     }
 }
 
@@ -30,48 +32,59 @@ __global__ void consolodateVector(float* vectorCuda, int level, int size){
 
 
 
-CudaParallel::CudaParallel(size_t size){
+CudaParallel::CudaParallel(size_t size, float* vectorData){
     m_array_size = size;
-}
-
-float CudaParallel::dotVectors(float* vectorA, float* vectorB){
-    //Create the pointers on the GPU to the data
-    float* vectorACuda;
-    float* vectorBCuda;
-    float* vectorCCuda;
-
-    //Create the Host Storage for the resultant vector
-    float* vectorC = new float[m_array_size];
 
     //Malloc on the GPU for Vector A
-    cudaMalloc(&vectorACuda, m_array_size * sizeof(float));
+    cudaMalloc(&vectorConstantCuda, m_array_size * sizeof(float));
+    //Memcpy the data to the GPU
+    cudaMemcpy(vectorConstantCuda, vectorData, m_array_size * sizeof(float), cudaMemcpyHostToDevice);
 
     //Malloc on the GPU for Vector B
-    cudaMalloc(&vectorBCuda, m_array_size * sizeof(float));
+    cudaMalloc(&vectorVariableCuda, m_array_size * sizeof(float));
 
     //Malloc on the GPU for Vector B
-    cudaMalloc(&vectorCCuda, m_array_size * sizeof(float));
+    cudaMalloc(&vectorOutputCuda, m_array_size * sizeof(float));
 
-    //Copy vector A to the GPU
-    cudaMemcpy(vectorACuda, vectorA, m_array_size * sizeof(float), cudaMemcpyHostToDevice);
+    //Create the Host Storage for the resultant vector
+    vectorOutput = new float[m_array_size];
+}
 
-    //Copy vector B to the GPU
-    cudaMemcpy(vectorBCuda, vectorB, m_array_size * sizeof(float), cudaMemcpyHostToDevice);
+// you must first call the cudaGetDeviceProperties() function, then pass 
+// the devProp structure returned to this function:
+int CudaParallel::getCudaCores(){  
+    int deviceID;
+    cudaDeviceProp props;
+
+    cudaGetDevice(&deviceID);
+    cudaGetDeviceProperties(&props, deviceID);
+        
+    int CUDACores = _ConvertSMVer2Cores(props.major, props.minor) * props.multiProcessorCount;
+
+    return CUDACores;
+}
+
+float CudaParallel::dotVectors(float* vectorData){
+
+    //Memcpy the output vector
+    cudaMemcpy(vectorVariableCuda, vectorData, m_array_size * sizeof(float), cudaMemcpyHostToDevice);
 
     //Do the dot products
-    dotProduct<<<std::ceil(m_array_size/256.0), 256>>>(vectorACuda, vectorBCuda, vectorCCuda, reinterpret_cast<int>(m_array_size));
+    dotProduct<<<std::ceil(1024/256.0), 256>>>(vectorConstantCuda, vectorVariableCuda, vectorOutputCuda, reinterpret_cast<int>(m_array_size));
 
     int level = 1;
 
     while(std::pow(2, level) <= m_array_size){
-        consolodateVector<<<std::ceil(m_array_size/256.0), 256>>>(vectorCCuda, level, m_array_size);
+        consolodateVector<<<std::ceil(m_array_size/256.0), 256>>>(vectorOutputCuda, level, m_array_size);
         level++;
     }
 
-    consolodateVector<<<std::ceil(m_array_size/256.0), 256>>>(vectorCCuda, level, m_array_size);
+    consolodateVector<<<std::ceil(m_array_size/256.0), 256>>>(vectorOutputCuda, level, m_array_size);
 
-    cudaMemcpy(vectorC, vectorCCuda, sizeof(float), cudaMemcpyDeviceToHost);
+    float* resultant = new float();
 
-    return *vectorC;
+    cudaMemcpy(resultant, vectorOutputCuda, sizeof(float), cudaMemcpyDeviceToHost);
+
+    return *resultant;
 }
 

@@ -8,9 +8,11 @@ class CudaParallelWrapper{
 private:
     CudaParallel* m_cudaParallel;
 public:
-    CudaParallelWrapper(size_t size);
+    CudaParallelWrapper(size_t size, float* vectorData);
 
     ~CudaParallelWrapper() = default;
 
-    float dotVectors(float* vectorA, float* vectorB);
+    float dotVectors(float* vectorData);
+
+    int getCudaCores();
 };

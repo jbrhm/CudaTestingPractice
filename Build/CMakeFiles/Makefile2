@@ -81,12 +81,12 @@ clean: CMakeFiles/CudaTesting.dir/clean
 CMakeFiles/CudaTesting.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/CudaTesting.dir/build.make CMakeFiles/CudaTesting.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/CudaTesting.dir/build.make CMakeFiles/CudaTesting.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/jabra/CudaTesting/Build/CMakeFiles --progress-num=1,2,3,4 "Built target CudaTesting"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/jabra/CudaTesting/Build/CMakeFiles --progress-num=1,2,3,4,5,6 "Built target CudaTesting"
 .PHONY : CMakeFiles/CudaTesting.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/CudaTesting.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/jabra/CudaTesting/Build/CMakeFiles 4
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/jabra/CudaTesting/Build/CMakeFiles 6
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/CudaTesting.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/jabra/CudaTesting/Build/CMakeFiles 0
 .PHONY : CMakeFiles/CudaTesting.dir/rule
